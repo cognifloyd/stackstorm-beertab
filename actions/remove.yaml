@@ -1,0 +1,19 @@
+---
+description: "Removes a beer for recipient from the owners tab"
+enabled: true
+entry_point: workflows/modify_operation.yaml
+pack: beertab
+name: remove
+runner_type: "orquesta"
+parameters:
+  owner:
+    type: string
+    description: "Owner of the beer tab, person who owes you beer"
+    default: "@{{ action_context.api_user }}"
+  recipient:
+    type: string
+    description: "Person who is receiving the beer"
+  operation:
+    type: string
+    default: remove
+    immutable: true

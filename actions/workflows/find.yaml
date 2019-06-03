@@ -1,0 +1,30 @@
+version: 1.0
+
+input:
+  - recipient
+
+tasks:
+  get_tabs:
+    action: st2.kv.grep_object
+    input:
+      query: "beertab."
+      prefix: true
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - beertabs: "{{ result().result }}"
+        do:
+          - aggregate_tabs
+
+  aggregate_tabs:
+    action: beertab.aggregate
+    input:
+      beertabs: "{{ ctx().beertabs }}"
+      recipient: "{{ ctx().recipient }}"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - beer_debt: "{{ result().result }}"
+
+output:
+  - beer_debt: "{{ ctx().beer_debt }}"

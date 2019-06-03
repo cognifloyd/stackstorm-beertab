@@ -1,0 +1,23 @@
+---
+description: "Modifies a beer tab"
+enabled: true
+entry_point: modify.py
+pack: beertab
+name: modify
+runner_type: "python-script"
+parameters:
+  beertab:
+    type: object
+    description: "Beer tab object"
+  owner:
+    type: string
+    description: "Owner of the beer tab"
+  operation:
+    type: string
+    enum:
+      - add
+      - remove
+  recipient:
+    type: string
+    description: "Person who is receiving a beer"
+      

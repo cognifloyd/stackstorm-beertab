@@ -1,0 +1,51 @@
+version: 1.0
+
+input:
+  - recipient
+  - owner
+
+vars:
+  - beertab: null
+  - beertab_kv: null
+  - key: "beertab.{{ ctx().owner }}"
+
+tasks:
+  get_tab:
+    action: st2.kv.get_object
+    input:
+      key: "{{ ctx().key }}"
+    next:
+      # beer tab was retrieved out of the key/value store
+      - when: "{{ succeeded() }}"
+        publish:
+          - beertab_kv: "{{ result().result }}"
+        do:
+          - add_beer_to_tab
+      - when: "{{ failed() }}"
+        do:
+          - add_beer_to_tab
+              
+  add_beer_to_tab:
+    action: beertab.modify
+    input:
+      beertab: "{{ ctx().beertab_kv }}"
+      recipient: "{{ ctx().recipient }}"
+      owner: "{{ ctx().owner }}"
+      operation: add
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - beertab: "{{ result().result }}"
+        do:
+          - save_tab
+
+  save_tab:
+    action: st2.kv.set_object
+    input:
+      key: "{{ ctx().key }}"
+      value: "{{ ctx().beertab }}"
+
+output:
+  - beertab: "{{ ctx().beertab }}"
+  - recipient: "{{ ctx().recipient }}"
+  - owner: "{{ ctx().owner }}"
