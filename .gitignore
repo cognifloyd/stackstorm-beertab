@@ -23,6 +23,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+wheels/
+MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -44,6 +46,8 @@ nosetests.xml
 coverage.xml
 *,cover
 .hypothesis/
+*.cover
+.pytest_cache/
 
 # Translations
 *.mo
@@ -52,6 +56,7 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
+db.sqlite3
 
 # Flask stuff:
 instance/
@@ -79,11 +84,20 @@ celerybeat-schedule
 .env
 
 # virtualenv
+.env
+.venv
+env/
 venv/
 ENV/
+env.bak/
+venv.bak/
 
 # Spyder project settings
 .spyderproject
+.spyproject
+
+# SageMath parsed files
+*.sage.py
 
 # Rope project settings
 .ropeproject
@@ -96,3 +110,12 @@ ENV/
 *.sublime-project
 *.sublime-workspace# PyCharm
 .idea
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
+# Ignore the continuous integration directory
+ci/
